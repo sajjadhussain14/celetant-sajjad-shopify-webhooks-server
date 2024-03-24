@@ -28,7 +28,7 @@ app.add_middleware(
 @app.get("/")
 async def server():
     # Your shared secret key
-    shared_secret_key = "sajjad123"
+    shared_secret_key = "c72c3df7dcb6c38b68a9e8cf225aec964e5febed202dc025873691cf085d5eb9"
 
     # Payload of the request
     order = {

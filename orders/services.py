@@ -8,7 +8,7 @@ import psycopg2
 import json
 
 
-shared_secret_key = "sajjad123"
+shared_secret_key = "c72c3df7dcb6c38b68a9e8cf225aec964e5febed202dc025873691cf085d5eb9"
 
 def verify_shopify_webhook(order: dict, hmac_header: str) :
     calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
