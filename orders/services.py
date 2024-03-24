@@ -16,14 +16,13 @@ def verify_shopify_webhook(order: dict, hmac_header: str) :
 
 def save_order(orderDict):
     
-    order = Order(**orderDict)
     try:
         query = """
         INSERT INTO orders (order_id, customer_id, total_price)
         VALUES (%s, %s, %s)
         RETURNING order_id, customer_id, total_price
         """
-        values = (order.order_id, order.customer_id, order.total_price)
+        values = (str(orderDict), "2", 99)
         with conn.cursor() as cur:
             cur.execute(query, values)
             saved_order = cur.fetchone()
