@@ -4,17 +4,17 @@ from fastapi import APIRouter, HTTPException, Header
 from .schemas import Order
 from .services import verify_shopify_webhook, save_order, get_orders
 from fastapi import Header
+import json
 
 router = APIRouter()
 
 @router.post("/webhooks/orders/create")
 async def create_order_webhook(
-    order,
-    x_shopify_hmac_sha256: str = Header(None, convert_underscores=False)
-):
+    **kwargs):
+    arguments_json = json.dumps(kwargs)
 
 
-    return save_order(order)
+    return save_order(arguments_json)
 
 
 @router.get("/orders")
