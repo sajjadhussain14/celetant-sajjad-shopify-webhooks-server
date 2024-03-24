@@ -1,0 +1,61 @@
+# services.py
+
+from .schemas import Order
+from db.connection import conn
+import hmac
+import hashlib
+import psycopg2
+import json
+
+
+shared_secret_key = "sajjad123"
+
+def verify_shopify_webhook(order: dict, hmac_header: str) :
+    calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
+    return hmac.compare_digest(calculated_hmac, hmac_header)
+
+def save_order(orderDict):
+    
+    order = Order(**orderDict)
+    try:
+        query = """
+        INSERT INTO orders (order_id, customer_id, total_price)
+        VALUES (%s, %s, %s)
+        RETURNING order_id, customer_id, total_price
+        """
+        values = (order.order_id, order.customer_id, order.total_price)
+        with conn.cursor() as cur:
+            cur.execute(query, values)
+            saved_order = cur.fetchone()
+            conn.commit()
+            conn.close()
+
+            return {"status_code": 200, "data": saved_order, "message": "Order saved successfully"}
+    except psycopg2.Error as e:
+        return {"status_code": 400, "data": None, "message": str(e)}
+    
+    
+
+def get_orders():
+    cursor = conn.cursor()
+
+    query = "SELECT order_id, customer_id, total_price FROM orders"
+    orders_data = {}
+    try:
+        cursor.execute(query, )
+        orders_data = cursor.fetchall()        
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
+
+
+    return [
+        Order(
+            order_id=row[0],
+            customer_id=row[1],
+            total_price=row[2]
+        )
+        for row in orders_data
+    ]
+
