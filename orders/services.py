@@ -22,7 +22,7 @@ def save_order(orderDict):
         VALUES (%s, %s, %s)
         RETURNING order_id, customer_id, total_price
         """
-        values = (str(orderDict), "2", 99)
+        values = ("555", "2", 99)
         with conn.cursor() as cur:
             cur.execute(query, values)
             saved_order = cur.fetchone()

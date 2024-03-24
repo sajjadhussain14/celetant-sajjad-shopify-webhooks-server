@@ -12,11 +12,7 @@ async def create_order_webhook(
     order,
     x_shopify_hmac_sha256: str = Header(None, convert_underscores=False)
 ):
-    if x_shopify_hmac_sha256 is None:
-        raise HTTPException(status_code=400, detail="Missing x_shopify_hmac_sha256 header")
 
-    if not verify_shopify_webhook(order, x_shopify_hmac_sha256):
-        raise HTTPException(status_code=401, detail="Invalid Shopify webhook")
 
     return save_order(order)
 
