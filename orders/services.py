@@ -1,5 +1,6 @@
 # services.py
 
+from fastapi import APIRouter, HTTPException, Header,Response
 from .schemas import Order
 from db.connection import conn
 import hmac
@@ -23,16 +24,16 @@ def save_order(orderDict):
         VALUES (%s, %s, %s)
         RETURNING order_id, customer_id, total_price
         """
-        values = (order_json, "88", 99)
+        values = ("order_json", "88", 99)
         with conn.cursor() as cur:
             cur.execute(query, values)
             saved_order = cur.fetchone()
             conn.commit()
             conn.close()
 
-            return {"status_code": 200, "data": saved_order, "message": "Order saved successfully"}
+        return Response(status_code=200)
     except psycopg2.Error as e:
-        return {"status_code": 400, "data": None, "message": str(e)}
+        return {"status_code": 500, "data": None, "message": "db insert error ji"}
     
     
 
