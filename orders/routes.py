@@ -16,6 +16,7 @@ async def handle_webhook(request: Request):
         # Extract request data and HMAC header
         request_data = await request.body()
         hmac_header = request.headers.get('X-Shopify-Hmac-SHA256')
+        #gKot9BLD7WV4sKQeDGEzUlxQw+J7rgJfoZDiEEE+XHs=
 
         # Decode bytes data to string
         request_data_str = request_data.decode('utf-8')
@@ -30,7 +31,7 @@ async def handle_webhook(request: Request):
 
 
         # Save order to database
-        save_order(generated_hmac,hmac_header)
+        save_order(generated_hmac,generated_hmac)
 
         # Respond with success
         return {"message": "Order processed successfully"}
