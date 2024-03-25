@@ -13,7 +13,7 @@ router = APIRouter()
 @router.post("/webhooks/orders/create")
 async def handle_order_creation_webhook(
     payload: dict,
-    x_shopify_hmac_sha256: str = Header(None, convert_underscores=False)
+    x_shopify_hmac_sha256: str = Header(..., convert_underscores=False)
 ):
     
     if x_shopify_hmac_sha256 is None:
