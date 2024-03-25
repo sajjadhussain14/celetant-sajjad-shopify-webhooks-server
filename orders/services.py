@@ -10,11 +10,15 @@ import json
 
 shared_secret_key = "c72c3df7dcb6c38b68a9e8cf225aec964e5febed202dc025873691cf085d5eb9"
 
-def verify_shopify_webhook(order: dict, hmac_header: str) :
+def calculated_hmac(order) :
+    calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
+    return calculated_hmac
+
+def verify_shopify_webhook(order, hmac_header) :
     calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
     return hmac.compare_digest(calculated_hmac, hmac_header)
 
-def save_order(order_data, hmac_header):
+def save_order(order_data,hmac_header):
 
     try:
         query = """
@@ -22,7 +26,7 @@ def save_order(order_data, hmac_header):
         VALUES (%s, %s, %s, %s)
         RETURNING order_id, customer_id, total_price, additional_data
         """
-        values = ("123", "88", 99,hmac_header)
+        values = ("123", order_data, 99,hmac_header)
         with conn.cursor() as cur:
             cur.execute(query, values)
             saved_order = cur.fetchone()
