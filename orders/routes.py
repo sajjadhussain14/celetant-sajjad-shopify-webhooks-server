@@ -23,7 +23,7 @@ async def handle_webhook(request: Request):
         order_data = json.loads(data_str)
 
         # Save order to database
-        order_id = save_order(order_data, hmac_header)
+        # save_order(order_data, hmac_header)
 
         Response("",status_code=200)
 
