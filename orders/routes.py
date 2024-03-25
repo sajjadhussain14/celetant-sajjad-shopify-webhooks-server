@@ -31,10 +31,10 @@ async def handle_webhook(request: Request):
             #raise HTTPException(status_code=501, detail="HMAC verification failed")
 
         # Save order to database
-        save_order(data_string,generated_hmac,generated_hmac)
+        save_order(data_string,generated_hmac,hmac_header)
 
         # Respond with success
-        return {"message": "Order processed successfully"}
+        return {"message": 200}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error")
