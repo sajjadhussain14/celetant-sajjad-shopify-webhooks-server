@@ -21,6 +21,8 @@ async def handle_webhook(request: Request):
 
         # Parse JSON data
         order_data = json.loads(data_str)
+        order_json = json.dumps(order_data)
+        formatted_data_string = "'" + order_json + "'"
 
         # Save order to database
         # save_order(order_data, hmac_header)
