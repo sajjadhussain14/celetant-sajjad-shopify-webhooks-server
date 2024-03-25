@@ -1,0 +1,55 @@
+# .gitignore for FastAPI project
+
+# Python-specific ignores
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+/venv
+venv/
+
+# Ignore environment-specific settings
+.env
+
+# IDE-specific ignores
+.vscode/
+.idea/
+
+# Ignore logs and other temporary files
+logs/
+*.log
+*.log.*
+*.swp
+*~
+
+# Ignore generated files
+dist/
+build/
+*.egg-info/
+*.pyc
+
+# Dependency directories
+__pycache__/
+annotated_types.egg-info/
+anyio.egg-info/
+bcrypt.egg-info/
+click.egg-info/
+colorama.egg-info/
+dnspython.egg-info/
+email_validator.egg-info/
+fastapi.egg-info/
+h11.egg-info/
+idna.egg-info/
+passlib.egg-info/
+psycopg2.egg-info/
+psycopg2_binary.egg-info/
+pydantic.egg-info/
+pydantic_core.egg-info/
+PyJWT.egg-info/
+python_multipart.egg-info/
+sniffio.egg-info/
+starlette.egg-info/
+typing_extensions.egg-info/
+uvicorn.egg-info/

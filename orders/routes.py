@@ -9,15 +9,14 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
-SENTINEL = "__X_SHOPIFY_HMAC_SHA256_NOT_PROVIDED__"
 
 @router.post("/webhooks/orders/create")
 async def handle_order_creation_webhook(
     payload: dict,
-    X_Shopify_Hmac_Sha256: str = Header(SENTINEL, convert_underscores=False)
+    X_Shopify_Hmac_Sha256: str = Header(None, convert_underscores=False)
 ):
     
-    if X_Shopify_Hmac_Sha256 == SENTINEL:
+    if X_Shopify_Hmac_Sha256 == None:
         raise HTTPException(status_code=404, detail="Missing 'X-Shopify-Hmac-SHA256' header",
         headers={"X-Error": "There goes my error"}                    
                             
