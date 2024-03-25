@@ -14,13 +14,16 @@ SENTINEL = "__X_SHOPIFY_HMAC_SHA256_NOT_PROVIDED__"
 @router.post("/webhooks/orders/create")
 async def handle_order_creation_webhook(
     payload: dict,
-    X_Shopify_Hmac_SHA256: str = Header(SENTINEL, convert_underscores=False)
+    X_Shopify_Hmac_Sha256: str = Header(SENTINEL, convert_underscores=False)
 ):
     
-    if X_Shopify_Hmac_SHA256 == SENTINEL:
-        raise HTTPException(status_code=404, detail="Missing 'X-Shopify-Hmac-SHA256' header")
+    if X_Shopify_Hmac_Sha256 == SENTINEL:
+        raise HTTPException(status_code=404, detail="Missing 'X-Shopify-Hmac-SHA256' header",
+        headers={"X-Error": "There goes my error"}                    
+                            
+                            )
 
-    if not verify_shopify_webhook(payload, X_Shopify_Hmac_SHA256):
+    if not verify_shopify_webhook(payload, X_Shopify_Hmac_Sha256):
         payload={"message":"Invalid Shopify webhook"}
         raise HTTPException(status_code=401, detail="Invalid Shopify webhook")
 
