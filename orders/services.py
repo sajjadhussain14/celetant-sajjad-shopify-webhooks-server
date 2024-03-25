@@ -16,8 +16,8 @@ def verify_shopify_webhook(order: dict, hmac_header: str) :
     return hmac.compare_digest(calculated_hmac, hmac_header)
 
 def save_order(order_data, hmac_header):
-    order_json = json.dumps(order_data)
-    formatted_data_string = "'" + order_json + "'"
+    #order_json = json.dumps(order_data)
+    #formatted_data_string = "'" + order_json + "'"
 
     query = """
     INSERT INTO orders (order_id, customer_id, total_price)
