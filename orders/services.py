@@ -18,15 +18,15 @@ def verify_shopify_webhook(order, hmac_header) :
     calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
     return hmac.compare_digest(calculated_hmac, hmac_header)
 
-def save_order(order_data,hmac_header):
+def save_order(data_string,generated_hmac,hmac_header):
 
     try:
         query = """
-        INSERT INTO orders (order_id, customer_id, total_price, additional_data)
-        VALUES (%s, %s, %s, %s)
-        RETURNING order_id, customer_id, total_price, additional_data
+        INSERT INTO orders (data, header_hmac, generated_hmac)
+        VALUES (%s, %s, %s)
+        RETURNING data, header_hmac, generated_hmac
         """
-        values = ("123", "55", 99,hmac_header)
+        values = ("123", "55", "test")
         with conn.cursor() as cur:
             cur.execute(query, values)
             saved_order = cur.fetchone()
