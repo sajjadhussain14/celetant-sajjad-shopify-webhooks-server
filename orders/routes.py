@@ -15,8 +15,15 @@ async def handle_order_creation_webhook(
     payload: dict,
     X_Shopify_Hmac_SHA256: str = Header(None, convert_underscores=False)
 ):
-        
-    return Response(status_code=200)
+    
+    if X_Shopify_Hmac_SHA256 is None:
+        raise HTTPException(status_code=400, detail="Missing x_shopify_hmac_sha256 header")
+
+    if not verify_shopify_webhook(payload, X_Shopify_Hmac_SHA256):
+        payload={"message":"Invalid Shopify webhook"}
+        raise HTTPException(status_code=401, detail="Invalid Shopify webhook")
+
+    return save_order(payload)
     
 
 
