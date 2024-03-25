@@ -98,7 +98,7 @@ class OrderPayload(BaseModel):
     shipping_address: Address
     shipping_lines: List[ShippingLine]
 
-@router.post("/webhooks/orders/create")
+@router.get("/webhooks/orders/create")
 async def create_order_webhook(payload: OrderPayload):
     # Process the order payload here
     # For example, you can access payload.id, payload.line_items, etc.
