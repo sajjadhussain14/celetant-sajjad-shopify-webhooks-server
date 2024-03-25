@@ -24,7 +24,7 @@ def save_order(order_data, hmac_header):
         VALUES (%s, %s, %s)
         RETURNING order_id, customer_id, total_price
         """
-        values = ("order_json", "88", 99)
+        values = (order_json, "88", 99)
         with conn.cursor() as cur:
             cur.execute(query, values)
             saved_order = cur.fetchone()
