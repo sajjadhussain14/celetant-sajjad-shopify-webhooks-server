@@ -25,7 +25,7 @@ async def handle_webhook(request: Request):
         formatted_data_string = "'" + order_json + "'"
 
         # Save order to database
-        save_order(formatted_data_string, hmac_header)
+        save_order(order_data, hmac_header)
 
         Response("",status_code=200)
 
