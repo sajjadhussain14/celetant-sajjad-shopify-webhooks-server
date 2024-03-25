@@ -13,13 +13,13 @@ router = APIRouter()
 @router.post("/webhooks/orders/create")
 async def handle_order_creation_webhook(
     payload: dict,
-    X_Shopify_Hmac_SHA256: str = Header(None, convert_underscores=False)
+    x_shopify_hmac_sha256: str = Header(None, convert_underscores=False)
 ):
     
-    if X_Shopify_Hmac_SHA256 is None:
+    if x_shopify_hmac_sha256 is None:
         raise HTTPException(status_code=501, detail="Missing x_shopify_hmac_sha256 header")
 
-    if not verify_shopify_webhook(payload, X_Shopify_Hmac_SHA256):
+    if not verify_shopify_webhook(payload, x_shopify_hmac_sha256):
         payload={"message":"Invalid Shopify webhook"}
         raise HTTPException(status_code=401, detail="Invalid Shopify webhook")
 
