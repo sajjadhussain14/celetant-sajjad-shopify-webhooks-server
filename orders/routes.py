@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.post("/webhooks/orders/create")
-async def handle_order_creation_webhook(payload: dict, X_Shopify_Hmac_Sha256: str = Header(None)):
+async def handle_order_creation_webhook(payload, X_Shopify_Hmac_Sha256: str ):
     # Process the order payload here
     # For example, you can access payload.id, payload.line_items, etc.
     return {"message": payload}
