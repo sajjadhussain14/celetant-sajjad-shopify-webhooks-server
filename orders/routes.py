@@ -12,11 +12,24 @@ router = APIRouter()
 
 @router.post("/webhooks/orders/create")
 async def handle_webhook(request: Request):
-    data = await request.body()
-    hmac_header = request.headers.get('X-Shopify-Hmac-SHA256')
-    save_order(data,hmac_header)
+    try:
+        data = await request.body()
+        hmac_header = request.headers.get('X-Shopify-Hmac-SHA256')
 
-    Response("",status_code=200)
+        # Decode bytes data to string
+        data_str = data.decode('utf-8')
+
+        # Parse JSON data
+        order_data = json.loads(data_str)
+
+        # Save order to database
+        order_id = save_order(order_data, hmac_header)
+
+        Response("",status_code=200)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
 
 @router.get("/orders")
 async def get_orders_route():

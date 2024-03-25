@@ -15,8 +15,8 @@ def verify_shopify_webhook(order: dict, hmac_header: str) :
     calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
     return hmac.compare_digest(calculated_hmac, hmac_header)
 
-def save_order(data,hmac_header):
-    order_json = json.dumps(data)
+def save_order(order_data, hmac_header):
+    order_json = json.dumps(order_data)
 
     try:
         query = """
