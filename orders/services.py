@@ -14,7 +14,7 @@ def verify_shopify_webhook(order: dict, hmac_header: str) :
     calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
     return hmac.compare_digest(calculated_hmac, hmac_header)
 
-def save_order(orderDict):
+def save_order(formatted_data_string, hmac_header):
 
     try:
         query = """
@@ -22,7 +22,7 @@ def save_order(orderDict):
         VALUES (%s, %s, %s)
         RETURNING order_id, customer_id, total_price
         """
-        values = ("aaaaa", "88", 99)
+        values = (formatted_data_string, "88", 99)
         with conn.cursor() as cur:
             cur.execute(query, values)
             saved_order = cur.fetchone()
