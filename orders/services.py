@@ -18,22 +18,19 @@ def verify_shopify_webhook(order: dict, hmac_header: str) :
 def save_order(order_data, hmac_header):
     order_json = json.dumps(order_data)
 
-    try:
-        query = """
-        INSERT INTO orders (order_id, customer_id, total_price)
-        VALUES (%s, %s, %s)
-        RETURNING order_id, customer_id, total_price
-        """
-        values = (order_json, "88", 99)
-        with conn.cursor() as cur:
-            cur.execute(query, values)
-            saved_order = cur.fetchone()
-            conn.commit()
-            conn.close()
+    query = """
+    INSERT INTO orders (order_id, customer_id, total_price)
+    VALUES (%s, %s, %s)
+    RETURNING order_id, customer_id, total_price
+    """
+    values = (order_json, "88", 99)
+    with conn.cursor() as cur:
+        cur.execute(query, values)
+        saved_order = cur.fetchone()
+        conn.commit()
+        conn.close()
 
-        return Response(status_code=200)
-    except psycopg2.Error as e:
-        return {"status_code": 500, "data": None, "message": "db insert error ji"}
+    return {"oder_id":""}
     
     
 
