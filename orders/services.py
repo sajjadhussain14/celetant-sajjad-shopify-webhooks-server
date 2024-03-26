@@ -7,6 +7,7 @@ import hashlib
 import psycopg2
 import json
 import base64
+from datetime import datetime
 
 
 CLIENT_SECRET = "c72c3df7dcb6c38b68a9e8cf225aec964e5febed202dc025873691cf085d5eb9"
@@ -84,13 +85,26 @@ def get_orders():
     finally:
         cursor.close()
 
-    return [
-        OrderDisplay(
+    orders = []
+    for row in orders_data:
+        # Convert datetime object to string
+        created_at_str = row[1].strftime('%Y-%m-%d %H:%M:%S') if row[1] else None
+        order = Order(
             id=row[0],
+            created_at=created_at_str,
+            currency=row[2],
             current_total_price=row[3],
+            total_tax=row[4],
+            total_discounts=row[5],
+            customer_locale=row[6],
             financial_status=row[7],
             fulfillment_status=row[8],
+            order_status_url=row[9],
+            line_items=row[10],
+            tax_lines=row[11],
+            shipping_address=row[12],
+            customer=row[13]
         )
-        for row in orders_data
-    ]
+        orders.append(order)
 
+    return orders
