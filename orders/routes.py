@@ -29,9 +29,11 @@ async def handle_webhook(request: Request):
         data_json_string = json.dumps(order_data)
         data_string = f"'{data_json_string}'"
         
+        
+        d_string=str(data_string)
 
         # Calculate HMAC
-        calculated_hmac_base64 = calculated_hmac(str(data_json_string))
+        calculated_hmac_base64 = calculated_hmac(d_string)
 
         is_matched=""
         if hmac_header is None :
@@ -47,7 +49,7 @@ async def handle_webhook(request: Request):
             #raise HTTPException(status_code=501, detail="HMAC verification failed")
 
         # Save order to database
-        save_order(data_string,is_matched,is_matched)
+        save_order(d_string,is_matched,is_matched)
 
         # Respond with success
         return {"message": 200}
