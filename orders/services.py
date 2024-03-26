@@ -71,22 +71,37 @@ def save_order(data):
 def get_orders():
     cursor = conn.cursor()
 
-    query = "SELECT order_id, customer_id, total_price FROM orders"
+    query = """
+    SELECT id, created_at, currency, current_total_price, total_tax, total_discounts,
+           customer_locale, financial_status, fulfillment_status, order_status_url,
+           line_items, tax_lines, shipping_address, customer
+    FROM orders
+    """
     orders_data = {}
     try:
-        cursor.execute(query, )
+        cursor.execute(query,)
         orders_data = cursor.fetchall()        
     except Exception as e:
         print(f"Error: {e}")
     finally:
         cursor.close()
 
-
     return [
         Order(
-            order_id=row[0],
-            customer_id=row[1],
-            total_price=row[2]
+            id=row[0],
+            created_at=row[1],
+            currency=row[2],
+            current_total_price=row[3],
+            total_tax=row[4],
+            total_discounts=row[5],
+            customer_locale=row[6],
+            financial_status=row[7],
+            fulfillment_status=row[8],
+            order_status_url=row[9],
+            line_items=row[10],
+            tax_lines=row[11],
+            shipping_address=row[12],
+            customer=row[13]
         )
         for row in orders_data
     ]
