@@ -72,9 +72,7 @@ def get_orders():
     cursor = conn.cursor()
 
     query = """
-    SELECT id, created_at, currency, current_total_price, total_tax, total_discounts,
-           customer_locale, financial_status, fulfillment_status, order_status_url,
-           line_items, tax_lines, shipping_address, customer
+    SELECT *
     FROM orders
     """
     orders_data = {}
