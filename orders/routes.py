@@ -34,7 +34,9 @@ async def handle_webhook(request: Request):
         calculated_hmac_base64 = calculated_hmac(data_string)
 
         is_matched=""
-        if hmac_header is not None and hmac.compare_digest(calculated_hmac_base64, hmac_header):
+        if hmac_header is None :
+            is_matched = "khali"
+        elif hmac.compare_digest(calculated_hmac_base64, hmac_header)==True:
             is_matched = str(True)
         else:
             is_matched = str(False)
