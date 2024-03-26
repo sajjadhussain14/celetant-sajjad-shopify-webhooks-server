@@ -76,13 +76,9 @@ def get_orders():
     FROM orders
     """
     orders_data = {}
-    try:
-        cursor.execute(query,)
-        orders_data = cursor.fetchall()        
-    except Exception as e:
-        print(f"Error: {e}")
-    finally:
-        cursor.close()
+    cursor.execute(query)
+    orders_data = cursor.fetchall()        
+    cursor.close()
 
     return [
         Order(
