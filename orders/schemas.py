@@ -21,4 +21,9 @@ class Order(BaseModel):
     
 class OrderDisplay(BaseModel):
     id: int
+    currency: Optional[str]
+    current_total_price: Optional[float]
+    financial_status: Optional[str]
+    fulfillment_status: Optional[str]
+
 
