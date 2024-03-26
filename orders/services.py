@@ -87,7 +87,6 @@ def get_orders():
     return [
         OrderDisplay(
             id=row[0],
-            created_at=row[1],
             current_total_price=row[3],
             financial_status=row[7],
             fulfillment_status=row[8],
