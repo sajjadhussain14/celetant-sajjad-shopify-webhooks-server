@@ -9,6 +9,7 @@ from pydantic import BaseModel
 import hmac
 import hashlib
 import base64
+from fastapi.encoders import jsonable_encoder
 
 router = APIRouter()
 
@@ -27,10 +28,11 @@ async def handle_webhook(request: Request):
         # Parse JSON data
         order_data = json.loads(request_data_str)
         data_json_string = json.dumps(order_data)
-        data_string = f"'{data_json_string}'"
+        d=jsonable_encoder(data_json_string)
+        data_string = f"'{d}'"
         
         
-        d_string=data_json_string
+        d_string=data_string
 
         # Calculate HMAC
         calculated_hmac_base64 = calculated_hmac(d_string)
