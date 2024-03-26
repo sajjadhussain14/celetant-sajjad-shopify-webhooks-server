@@ -91,16 +91,8 @@ def get_orders():
             id=row[0],
             currency=row[2],
             current_total_price=row[3],
-            total_tax=row[4],
-            total_discounts=row[5],
-            customer_locale=row[6],
             financial_status=row[7],
             fulfillment_status=row[8],
-            order_status_url=row[9],
-            line_items=row[10],
-            tax_lines=row[11],
-            shipping_address=row[12],
-            customer=row[13]
         )
         orders.append(order)
 
