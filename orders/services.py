@@ -87,11 +87,8 @@ def get_orders():
 
     orders = []
     for row in orders_data:
-        # Convert datetime object to string
-        created_at_str = row[1].strftime('%Y-%m-%d %H:%M:%S') if row[1] else None
-        order = Order(
+        order = OrderDisplay(
             id=row[0],
-            created_at=created_at_str,
             currency=row[2],
             current_total_price=row[3],
             total_tax=row[4],
