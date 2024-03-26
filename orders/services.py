@@ -11,7 +11,7 @@ import json
 shared_secret_key = "c72c3df7dcb6c38b68a9e8cf225aec964e5febed202dc025873691cf085d5eb9"
 
 def calculated_hmac(order) :
-    calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
+    calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), json.dumps(order, sort_keys=True).encode('utf-8'), hashlib.sha256).hexdigest()
     return calculated_hmac
 
 def verify_shopify_webhook(order, hmac_header) :
