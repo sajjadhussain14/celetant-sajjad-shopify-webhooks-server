@@ -18,3 +18,7 @@ class Order(BaseModel):
     tax_lines: Optional[dict]
     shipping_address: Optional[dict]
     customer: Optional[dict]
+    
+class OrderDisplay(BaseModel):
+    id: int
+
