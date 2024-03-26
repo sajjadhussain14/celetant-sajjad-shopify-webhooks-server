@@ -25,7 +25,7 @@ async def handle_webhook(request: Request):
         order_data = json.loads(request_data_str)
         data_string = json.dumps(order_data)
         data_string = f"'{data_string}'"
-        generated_hmac=calculated_hmac(order_data)
+        generated_hmac=calculated_hmac(data_string)
         # Verify HMAC integrity
         #if not verify_shopify_webhook(order_data, hmac_header):
             #raise HTTPException(status_code=501, detail="HMAC verification failed")
