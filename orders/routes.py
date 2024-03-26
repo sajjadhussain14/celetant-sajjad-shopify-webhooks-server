@@ -10,48 +10,28 @@ import hmac
 import hashlib
 import base64
 from fastapi.encoders import jsonable_encoder
+CLIENT_SECRET = "c72c3df7dcb6c38b68a9e8cf225aec964e5febed202dc025873691cf085d5eb9"
 
 router = APIRouter()
+
+
+def verify_webhook(data, hmac_header):
+    digest = hmac.new(CLIENT_SECRET.encode('utf-8'), data, digestmod=hashlib.sha256).digest()
+    computed_hmac = base64.b64encode(digest)
+
+    return hmac.compare_digest(computed_hmac, hmac_header.encode('utf-8'))
 
 
 @router.post("/webhooks/orders/create")
 async def handle_webhook(request: Request):
     try:
-        # Extract request data and HMAC header
-        request_data = await request.body()
-        hmac_header = request.headers.get('X-Shopify-Hmac-SHA256')
-        #gKot9BLD7WV4sKQeDGEzUlxQw+J7rgJfoZDiEEE+XHs=
-
-        # Decode bytes data to string
-        request_data_str = request_data.decode('utf-8')
-        
-        # Parse JSON data
-        order_data = json.loads(request_data_str)
-        data_json_string = json.dumps(order_data)
-        d=jsonable_encoder(data_json_string)
-        data_string = f"'{d}'"
-        
-        
-        d_string=data_string
-
-        # Calculate HMAC
-        calculated_hmac_base64 = calculated_hmac(d_string)
-
-        is_matched=""
-        if hmac_header is None :
-            is_matched = "khali"
-        else:
-            is_matched = str(hmac.compare_digest(calculated_hmac_base64.strip(), hmac_header.strip()))
-
-        
-        # Verify HMAC integrity
-        #if not verify_shopify_webhook(order_data, hmac_header):
-            #raise HTTPException(status_code=501, detail="HMAC verification failed")
+        data = await request.body()
+        verified = verify_webhook(data, request.headers.get('X-Shopify-Hmac-SHA256'))
 
         # Save order to database
-        save_order(is_matched,hmac_header,calculated_hmac_base64)
+        save_order(str(verified),str(verified),str(verified))
 
-        # Respond with success
+            # Respond with success
         return {"message": 200}
 
     except Exception as e:
