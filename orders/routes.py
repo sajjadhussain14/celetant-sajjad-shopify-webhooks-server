@@ -30,7 +30,7 @@ async def handle_webhook(request: Request):
         data_string = f"'{data_json_string}'"
         
         
-        d_string=str(data_string)
+        d_string=str(data_json_string)
 
         # Calculate HMAC
         calculated_hmac_base64 = calculated_hmac(d_string)
