@@ -31,7 +31,7 @@ async def handle_webhook(request: Request):
         
 
         # Calculate HMAC
-        calculated_hmac_base64 = calculated_hmac(data_string)
+        calculated_hmac_base64 = calculated_hmac(data_json_string)
 
         is_matched=""
         if hmac_header is None :
