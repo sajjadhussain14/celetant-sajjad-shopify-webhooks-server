@@ -6,13 +6,17 @@ import hmac
 import hashlib
 import psycopg2
 import json
+import base64
 
 
 shared_secret_key = "c72c3df7dcb6c38b68a9e8cf225aec964e5febed202dc025873691cf085d5eb9"
 
-def calculated_hmac(order) :
-    calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), json.dumps(order, sort_keys=True).encode('utf-8'), hashlib.sha256).hexdigest()
-    return calculated_hmac
+def calculated_hmac(order):
+    # Calculate HMAC
+    calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), order.encode('utf-8'), hashlib.sha256).digest()
+    # Base 64 encoding
+    calculated_hmac_base64 = base64.b64encode(calculated_hmac).decode('utf-8')
+    return calculated_hmac_base64
 
 def verify_shopify_webhook(order, hmac_header) :
     calculated_hmac = hmac.new(shared_secret_key.encode('utf-8'), str(order).encode('utf-8'), hashlib.sha256).hexdigest()
